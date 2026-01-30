@@ -1,0 +1,60 @@
+<div class="bg-zinc-900/50 p-6 rounded-[2rem] border border-white/5 mb-6">
+    <h4 class="text-[10px] font-black text-[#F57C00] uppercase mb-4 tracking-widest">Pulse Wisdom</h4>
+    <div class="space-y-4">
+        <button onclick="showWisdom('manifesto')" class="w-full flex justify-between items-center py-2 group">
+            <span class="text-sm font-bold group-hover:text-[#F57C00] transition-colors">The Manifesto</span>
+            <i data-lucide="sparkles" class="w-4 h-4 text-zinc-600"></i>
+        </button>
+        <button onclick="showWisdom('about')" class="w-full flex justify-between items-center py-2 group">
+            <span class="text-sm font-bold group-hover:text-[#F57C00] transition-colors">Our Story</span>
+            <i data-lucide="book-open" class="w-4 h-4 text-zinc-600"></i>
+        </button>
+    </div>
+</div>
+
+<div id="wisdom-overlay" class="hidden fixed inset-0 bg-black/95 z-[2000] overflow-y-auto px-8 py-20 backdrop-blur-xl">
+    <button onclick="closeWisdom()" class="fixed top-8 right-8 p-3 bg-white/10 rounded-full">
+        <i data-lucide="x" class="w-6 h-6"></i>
+    </button>
+    
+    <div id="wisdom-content" class="max-w-md mx-auto fade-in-section">
+        </div>
+</div>
+
+<script>
+    const wisdomData = {
+        manifesto: `
+            <h1 class="text-4xl font-black italic text-[#F57C00] mb-8 leading-tight uppercase tracking-tighter">Frequency over Noise</h1>
+            <div class="space-y-6 text-zinc-300 leading-relaxed font-medium italic">
+                <p>"We believe that your digital space should be an extension of your spirit, not a cage for your attention."</p>
+                <p>"We believe in the <span class="text-white font-bold">Pulse</span>. The raw, unedited heartbeat of a creator."</p>
+                <p>"Where your treasure is, there your heart will be also. Your time, your privacy, and your originality are the only treasures we guard."</p>
+                <div class="h-px bg-white/10 my-8"></div>
+                <p class="text-white text-xl font-black uppercase not-italic">Stop Scrolling.<br>Start Pulsing.</p>
+            </div>
+        `,
+        about: `
+            <h1 class="text-4xl font-black italic text-[#F57C00] mb-8 leading-tight uppercase tracking-tighter">The Architects</h1>
+            <div class="space-y-6 text-zinc-400 text-sm leading-relaxed">
+                <p>Clintzy began in a small dark room, lit only by the glow of monitors and the conviction that social media had lost its way.</p>
+                <p>Our founder, <span class="text-white font-bold">Boss Clintzy</span>, saw a world drowning in "content" but starving for "connection." He envisioned a <span class="text-[#F57C00]">Digital Sanctuary</span>.</p>
+                <p>We spent years perfecting the <span class="text-white">Pulse Pro Engine</span>—a system designed to prioritize human energy over robotic engagement. We built the <span class="text-white font-bold">Vault</span> because your data is your legacy.</p>
+                <p>Clintzy Tech is a collective of dreamers returning the heart to the machine. We build ecosystems where your mind can breathe.</p>
+            </div>
+        `
+    };
+
+    function showWisdom(key) {
+        const overlay = document.getElementById('wisdom-overlay');
+        const content = document.getElementById('wisdom-content');
+        content.innerHTML = wisdomData[key];
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Lock scroll
+        lucide.createIcons();
+    }
+
+    function closeWisdom() {
+        document.getElementById('wisdom-overlay').classList.add('hidden');
+        document.body.style.overflow = 'auto'; // Restore scroll
+    }
+</script>
