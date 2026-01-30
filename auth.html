@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clintzy | Access Pulse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root { --brand: #F57C00; }
+        body { background: #000; color: #fff; font-family: 'Inter', sans-serif; }
+        .input-field { background: #121212; border: 1px solid #222; border-radius: 1rem; padding: 1rem; width: 100%; outline: none; transition: 0.3s; color: white; }
+        .input-field:focus { border-color: var(--brand); }
+        .tab-btn { padding-bottom: 8px; border-bottom: 2px solid transparent; transition: 0.3s; cursor: pointer; }
+        .tab-active { border-color: var(--brand); color: var(--brand); }
+        
+        /* Loading Animation */
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(0,0,0,0.3);
+            border-radius: 50%;
+            border-top-color: #000;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen px-6">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-black italic text-[#F57C00]">Clintzy</h1>
+            <p class="text-[10px] uppercase tracking-widest text-zinc-500">Pulse Pro Entry</p>
+        </div>
+
+        <div class="flex gap-8 mb-8 justify-center font-bold text-sm uppercase tracking-tighter">
+            <span id="login-tab" class="tab-btn tab-active" onclick="toggleAuth('login')">Login</span>
+            <span id="signup-tab" class="tab-btn" onclick="toggleAuth('signup')">Sign Up</span>
+        </div>
+
+        <form id="auth-form" class="space-y-4">
+            <div id="signup-fields" class="hidden space-y-4">
+                <input type="text" id="user-name" placeholder="FULL NAME" class="input-field">
+            </div>
+            <input type="email" id="user-email" placeholder="EMAIL ADDRESS" class="input-field" required>
+            <input type="password" id="user-pass" placeholder="PASSWORD" class="input-field" required>
+            
+            <button type="submit" id="submit-btn" class="w-full bg-[#F57C00] text-black font-black p-4 rounded-2xl uppercase tracking-tighter hover:scale-[1.02] transition-all active:scale-95 flex justify-center items-center gap-3">
+                <span id="btn-text">Enter the Pulse</span>
+                <div id="btn-loader" class="loader hidden"></div>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // 1. Toggle between Login and Signup
+        function toggleAuth(type) {
+            const isLogin = type === 'login';
+            document.getElementById('signup-fields').classList.toggle('hidden', isLogin);
+            document.getElementById('login-tab').classList.toggle('tab-active', isLogin);
+            document.getElementById('signup-tab').classList.toggle('tab-active', !isLogin);
+            document.getElementById('btn-text').innerText = isLogin ? 'Enter the Pulse' : 'Create Account';
+        }
+
+        // 2. Handle Form Submission & Redirect
+        document.getElementById('auth-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const btnText = document.getElementById('btn-text');
+            const loader = document.getElementById('btn-loader');
+
+            // Show Loading State
+            btn.disabled = true;
+            btnText.innerText = "Verifying Identity...";
+            loader.classList.remove('hidden');
+
+            // Simulate Network delay for authenticity
+            setTimeout(() => {
+                localStorage.setItem('pulse_authorized', 'true');
+                
+                const nameInput = document.getElementById('user-name').value;
+                if(nameInput) {
+                    localStorage.setItem('pulse_user_name', nameInput);
+                }
+
+                window.location.href = "index.html";
+            }, 1500);
+        });
+
+        // 3. Security Check: Redirect if already logged in
+        window.addEventListener('load', () => {
+            if(localStorage.getItem('pulse_authorized') === 'true') {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
+</body>
+</html>
